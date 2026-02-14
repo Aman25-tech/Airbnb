@@ -1,11 +1,11 @@
-if(process.env.NODE_ENV != "production") {
+if (process.env.NODE_ENV != "production") {
     require("dotenv").config();
 }
 
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const path = require("path"); 
+const path = require("path");
 const methodoverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
@@ -55,8 +55,8 @@ const sessionOptions = {
     resave: false,
     saveUninitialized: true,
     cookie: {
-        expires: Date.now() + 7 * 24 * 60 *60 *1000,
-        maxAge: 7 * 24 * 60 *60 *1000,
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true,
     },
 };
@@ -88,10 +88,11 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-    let {statusCode = 500, message = "Something went wrong!"} = err;
+    let { statusCode = 500, message = "Something went wrong!" } = err;
     res.status(statusCode).render("err.ejs", { err });
 });
 
-app.listen(8080, () => {
-    console.log("Server is listening on port 8080");
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+    console.log(`Server is listening on port ${port}`);
 });
