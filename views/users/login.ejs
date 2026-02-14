@@ -1,21 +1,39 @@
 <% layout("/layouts/boilerplate") %>
 
-<div class="row mt-3">
-    <h1 class="col-6 offset-3">Login</h1>
-    <div class="col-6 offset-3">
-        <form action="/login" method="POST" class="needs-validation" novalidate>
-            <div class="mb-3">
-                <label for="username" class="form-label">Username:</label>
-                <input name="username" id="username" type="text" class="form-control" required />
-            <div class="valid-feedback">Looks good!</div>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-icon">
+                <i class="fa-regular fa-compass"></i>
             </div>
+            <h2 class="auth-heading">Welcome back</h2>
+            <p class="auth-subtext">Log in to continue your adventure</p>
 
-            <div class="mb-3">
-                <label for="password" class="form-label">Password:</label>
-                <input name="password" id="password" type="password" class="form-control" required />
-                <br>
-                <button class="btn btn-success">Login</button>
-            </div>
-        </form>
+            <form action="/login" method="POST" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <div class="input-icon-group">
+                        <i class="fa-solid fa-user"></i>
+                        <input name="username" id="username" type="text" class="form-control"
+                            placeholder="Enter your username" required />
+                    </div>
+                    <div class="invalid-feedback">Please enter your username</div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-icon-group">
+                        <i class="fa-solid fa-lock"></i>
+                        <input name="password" id="password" type="password" class="form-control"
+                            placeholder="Enter your password" required />
+                    </div>
+                    <div class="invalid-feedback">Please enter your password</div>
+                </div>
+
+                <button class="btn auth-btn" type="submit">
+                    <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>Log In
+                </button>
+            </form>
+
+            <p class="auth-alt">Don't have an account? <a href="/signup">Sign up</a></p>
+        </div>
     </div>
-</div>

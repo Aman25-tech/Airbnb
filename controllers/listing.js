@@ -2,9 +2,28 @@ const Listing = require("../models/listing");
 
 module.exports.index = async (req, res) => {
     try {
-        const allListings = await Listing.find({});
-        console.log("Found listings:", allListings.length);
-        res.render("listings/index", { allListings });
+        let filter = {};
+        const { category, q } = req.query;
+
+        // Category filter
+        if (category && category !== "Trending") {
+            filter.category = category;
+        }
+
+        // Search filter
+        if (q && q.trim() !== "") {
+            const searchRegex = new RegExp(q.trim(), "i");
+            filter.$or = [
+                { title: searchRegex },
+                { location: searchRegex },
+                { country: searchRegex },
+            ];
+        }
+
+        const allListings = await Listing.find(filter);
+        const activeCategory = category || "Trending";
+        const searchQuery = q || "";
+        res.render("listings/index", { allListings, activeCategory, searchQuery });
     } catch (error) {
         console.error("Error fetching listings:", error);
         req.flash("error", "Error loading listings");
@@ -12,18 +31,18 @@ module.exports.index = async (req, res) => {
     }
 };
 
-module.exports.renderNewForm = (req,res)=>{
+module.exports.renderNewForm = (req, res) => {
     res.render("listings/new.ejs");
 };
 
-module.exports.showListing = async(req,res)=>{
-    let {id} = req.params;
-    const listing = await Listing.findById(id).populate({ path: "reviews"}).populate("owner");
-    if(!listing){
+module.exports.showListing = async (req, res) => {
+    let { id } = req.params;
+    const listing = await Listing.findById(id).populate({ path: "reviews" }).populate("owner");
+    if (!listing) {
         req.flash("error", "Listing you requested for does not exist");
         res.redirect("/listings");
     };
-    res.render("listings/show.ejs", {listing});
+    res.render("listings/show.ejs", { listing });
 };
 
 module.exports.createListing = async (req, res) => {
@@ -37,36 +56,36 @@ module.exports.createListing = async (req, res) => {
     res.redirect("/listings");
 }
 
-module.exports.renderEditForm = async(req,res)=>{
-    let {id}= req.params;
+module.exports.renderEditForm = async (req, res) => {
+    let { id } = req.params;
     const listing = await Listing.findById(id);
-    if(!listing){
+    if (!listing) {
         req.flash("error", "Listing you requested for does not exist");
         res.redirect("/listings");
     };
     let originalImageUrl = listing.image.url;
     originalImageUrl = originalImageUrl.replace("/uploads", "/uploads/w_25");
-    res.render("listings/edit.ejs", {listing, originalImageUrl});
+    res.render("listings/edit.ejs", { listing, originalImageUrl });
 }
 
 module.exports.updateListing = async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-    
-    if(req.file) {
+
+    if (req.file) {
         let url = req.file.path;
         let filename = req.file.filename;
         listing.image = { url, filename };
         await listing.save();
     }
-    
+
     req.flash("success", "Listing Updated!");
     res.redirect(`/listings/${id}`);
 }
 
-module.exports.destroyListing = async(req,res)=>{
-    let {id} = req.params;
-    let deletedListing =await Listing.findByIdAndDelete(id);
+module.exports.destroyListing = async (req, res) => {
+    let { id } = req.params;
+    let deletedListing = await Listing.findByIdAndDelete(id);
     console.log(deletedListing);
     req.flash("success", "Listing Deleted Successfully!");
     res.redirect("/listings");

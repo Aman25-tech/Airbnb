@@ -1,30 +1,49 @@
 <% layout("/layouts/boilerplate") %>
 
-    <div class="row mt-3">
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-icon">
+                <i class="fa-regular fa-compass"></i>
+            </div>
+            <h2 class="auth-heading">Create your account</h2>
+            <p class="auth-subtext">Join Wanderlust and start exploring</p>
 
-        <h1 class="col-6 offset-3">SignUp</h1>
-
-        <div class="col-6 offset-3">
             <form action="/signup" method="POST" class="needs-validation" novalidate>
-
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" name="username" class="form-control" id="username" required>
-                    <div class="valid-feedback">Looks good</div>
-                    <div class="invalid-feedback">Enter your username</div>
+                    <div class="input-icon-group">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" name="username" class="form-control" id="username"
+                            placeholder="Choose a username" required>
+                    </div>
+                    <div class="invalid-feedback">Please choose a username</div>
                 </div>
 
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control" id="email" required>
+                    <div class="input-icon-group">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" name="email" class="form-control" id="email" placeholder="you@example.com"
+                            required>
+                    </div>
+                    <div class="invalid-feedback">Please enter a valid email</div>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-4">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="password" required>
+                    <div class="input-icon-group">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" name="password" class="form-control" id="password"
+                            placeholder="Create a password" required>
+                    </div>
+                    <div class="invalid-feedback">Please enter a password</div>
                 </div>
 
-                <button class="btn btn-success">SignUp</button>
+                <button class="btn auth-btn" type="submit">
+                    <i class="fa-solid fa-user-plus me-2"></i>Sign Up
+                </button>
             </form>
+
+            <p class="auth-alt">Already have an account? <a href="/login">Log in</a></p>
         </div>
     </div>
