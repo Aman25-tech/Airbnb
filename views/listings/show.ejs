@@ -32,7 +32,7 @@
                                 style="background: var(--color-rose-100); color: var(--color-primary);"></i>
                             <div>
                                 <p class="mb-0" style="font-weight: 700; color: var(--color-gray-900);">Hosted by <%=
-                                        listing.owner.username %>
+                                        listing.owner ? listing.owner.username : "Unknown Owner" %>
                                 </p>
                                 <p class="mb-0" style="font-size: 0.8rem; color: var(--color-gray-400);">Superhost</p>
                             </div>
@@ -58,7 +58,7 @@
                 </div>
 
                 <!-- Action Buttons -->
-                <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
+                <% if(currUser && listing.owner && currUser._id.equals(listing.owner._id)) { %>
                     <div class="btns mt-4">
                         <a href="/listings/<%= listing.id %>/edit" class="btn btn-dark px-4"
                             style="border-radius: var(--radius-lg); font-weight: 700; font-size: 0.875rem;">
@@ -128,6 +128,11 @@
                                                                         style="font-size: 0.75rem; color: var(--color-primary);"></i>
                                                                 </div>
                                                                 <div>
+                                                                    <h6 class="mb-0"
+                                                                        style="font-weight: 700; font-size: 0.9rem;">
+                                                                        <%= review.author ? review.author.username
+                                                                            : "Anonymous" %>
+                                                                    </h6>
                                                                     <p class="starability-result mb-0"
                                                                         data-rating="<%= review.rating %>">
                                                                         <%= review.rating %> stars
@@ -136,7 +141,8 @@
                                                             </div>
                                                             <% if(currUser && ( (review.author &&
                                                                 review.author._id.equals(currUser._id)) ||
-                                                                (listing.owner._id.equals(currUser._id)) )) { %>
+                                                                (listing.owner &&
+                                                                listing.owner._id.equals(currUser._id)) )) { %>
                                                                 <form
                                                                     action="/listings/<%= listing.id %>/reviews/<%= review.id %>?_method=DELETE"
                                                                     method="post" class="d-inline">
