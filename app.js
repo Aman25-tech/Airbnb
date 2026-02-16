@@ -20,7 +20,7 @@ const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
-const dbUrl = process.env.ATLAS_DB_URL;
+const dbUrl = process.env.ATLAS_DB_URL || "mongodb://localhost:27017/airbnb";
 
 main().then(() => {
     console.log("Connected to MongoDB");
@@ -41,7 +41,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,
-    crypto: process.env.SECRET,
+    crypto: { secret: process.env.SECRET },
     touchAfter: 24 * 60 * 60,
 });
 
